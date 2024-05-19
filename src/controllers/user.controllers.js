@@ -59,11 +59,6 @@ const verifyCode = catchError(async(req, res) => {
     user.isVerified = true;
     await user.save();
 
-    // const user = await User.update(
-    //     {isVerified : true},
-    //     {where : emailCode.userId, returning:true},
-    // );
-
     await emailCode.destroy();
 
 
@@ -118,7 +113,6 @@ const getMe = catchError(async(req, res) => {
 
 const resetPassword = catchError(async(req, res) => {
     const {email, frontBaseUrl} = req.body
-    //const encriptedPassword = await bcrypt.hash(password,10)
     const user =  await User.findOne({where:{ email }});
     if(!user) return res.status(401).json({message: 'Email Invalid'});
     if (!user.isVerified) return res.status(401).json({message: 'the user is not verified'});
